@@ -1,0 +1,15 @@
+.object_panel .ProseMirror {
+  position: relative;
+}
+.object_panel .ProseMirror:after {
+  content: "";
+  display: block;
+  width: calc(100% - (max((100% - 1024px) / 2, 0px) - 8px) * 2);
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: calc(max((100% - 1024px) / 2, 0px) - 8px);
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px rgb(229, 232, 235);
+}

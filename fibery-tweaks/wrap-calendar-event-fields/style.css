@@ -1,0 +1,19 @@
+.calendar_panel .calendar_event .card-container-title-visible {
+  flex-direction: column;
+}
+
+.calendar_panel .calendar_event .card_container {
+  min-width: 0px;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.calendar_panel .calendar_event .card_container .title {
+  overflow: hidden;
+  white-space: break-spaces;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--titleMaxRows);
+  -webkit-box-orient: vertical;
+}

@@ -1,0 +1,5 @@
+.column_header {
+  white-space: break-spaces;
+  text-align: left;
+  gap: 6px;
+}
