@@ -1,0 +1,39 @@
+{
+  "name": "Fiberflow",
+  "version": "1.2.0",
+  "description": "Extensions for Fibery.io",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "Fiberflow",
+    "default_popup": "index.html",
+    "default_icon": "assets/images/favicon-128x128.png"
+  },
+  "icons": {
+    "16": "assets/images/favicon-16x16.png",
+    "24": "assets/images/favicon-24x24.png",
+    "32": "assets/images/favicon-32x32.png",
+    "48": "assets/images/favicon-48x48.png",
+    "96": "assets/images/favicon-96x96.png",
+    "128": "assets/images/favicon-128x128.png"
+  },
+  "host_permissions": [],
+  "permissions": ["storage", "tabs"],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/tweaks/*"],
+      "matches": ["https://*.fibery.io/*"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.fibery.io/*"],
+      "exclude_matches": ["https://fibery.io/*", "https://community.fibery.io/*"],
+      "js": ["content-script/fibery-tweaks.js"]
+    },
+    {
+      "matches": ["https://*.fibery.io/*"],
+      "exclude_matches": ["https://fibery.io/*", "https://community.fibery.io/*"],
+      "js": ["content-script/message-passing.js"]
+    }
+  ]
+}

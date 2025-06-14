@@ -1,10 +1,8 @@
 function fiberflowCustomBranding() {
-  const tweakId = document.currentScript.getAttribute("data-fibery-tweak-id");
+  const tweakId = document.currentScript.getAttribute('data-fibery-tweak-id');
 
   // Parse parameters
-  const parameters = JSON.parse(
-    document.currentScript.getAttribute("data-fibery-tweak-parameters")
-  );
+  const parameters = JSON.parse(document.currentScript.getAttribute('data-fibery-tweak-parameters'));
 
   // Basic
   const basic = parameters.basic || {};
@@ -15,23 +13,23 @@ function fiberflowCustomBranding() {
 
   // Font family
   const fontFamily = [
-    (basic.fontFamily || "").trim(),
-    "Inter Variable",
-    "SF Pro Display",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "Segoe UI Variable Display",
-    "Segoe UI",
-    "Roboto",
-    "Oxygen",
-    "Ubuntu",
-    "Cantarell",
-    "Open Sans",
-    "Helvetica Neue",
-    "sans-serif",
+    (basic.fontFamily || '').trim(),
+    'Inter Variable',
+    'SF Pro Display',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI Variable Display',
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Open Sans',
+    'Helvetica Neue',
+    'sans-serif',
   ]
     .filter(Boolean)
-    .join(",");
+    .join(',');
 
   // Button
   const button = parameters.button || {};
@@ -50,51 +48,81 @@ function fiberflowCustomBranding() {
   const custom = parameters.custom || [];
   const customCssVariables = custom
     .map((item) => {
-      if (item.variableName.startsWith("--")) {
+      if (item.variableName.startsWith('--')) {
         return `${item.variableName}: ${item.color};`;
       }
       return `--${item.variableName}: ${item.color};`;
     })
-    .join("\n");
+    .join('\n');
 
   // Update content of this fibery tweaks css style tag
-  var style = document.querySelector(
-    `style[data-fibery-tweak-id="${tweakId}"]`
-  );
+  var style = document.querySelector(`style[data-fibery-tweak-id="${tweakId}"]`);
   if (!style) {
-    style = document.createElement("style");
-    style.setAttribute("data-fibery-tweak-id", tweakId);
-    style.setAttribute("data-fibery-tweak-filename", "custom-branding.css");
+    style = document.createElement('style');
+    style.setAttribute('data-fibery-tweak-id', tweakId);
+    style.setAttribute('data-fibery-tweak-filename', 'custom-branding.css');
     document.head.appendChild(style);
   }
 
+  // Build CSS properties array conditionally
+  const cssProperties = [];
+
+  // Basic properties
+  if (fontFamily) {
+    cssProperties.push(`font-family: ${fontFamily} !important;`);
+  }
+
+  if (textColor) {
+    cssProperties.push(`--fibery-color-textColor: ${textColor};`);
+  }
+  if (linkColor) {
+    cssProperties.push(`--fibery-color-linkColor: ${linkColor};`);
+  }
+  if (mainBackgroundColor) {
+    cssProperties.push(`--fibery-color-mainBg: ${mainBackgroundColor};`);
+  }
+  if (panelContentBackgroundColor) {
+    cssProperties.push(`--fibery-color-panelBg: ${panelContentBackgroundColor};`);
+    cssProperties.push(`--fibery-color-panelContentBg: ${panelContentBackgroundColor};`);
+  }
+
+  // Button properties
+  if (buttonTextColor) {
+    cssProperties.push(`--fibery-color-colorTextButtonSolidAccent: ${buttonTextColor};`);
+  }
+  if (buttonBackgroundColor) {
+    cssProperties.push(`--fibery-color-colorBgButtonSolidAccentDefault: ${buttonBackgroundColor};`);
+  }
+  if (buttonDestructiveTextColor) {
+    cssProperties.push(`--fibery-color-colorTextButtonSolidDestructive: ${buttonDestructiveTextColor};`);
+  }
+  if (buttonDestructiveBackgroundColor) {
+    cssProperties.push(`--fibery-color-colorBgButtonSolidDestructiveDefault: ${buttonDestructiveBackgroundColor};`);
+  }
+
+  // Sidebar properties
+  if (sidebarBackgroundColor) {
+    cssProperties.push(`--fibery-color-menuBg: ${sidebarBackgroundColor};`);
+    cssProperties.push(`--fibery-color-colorBgMenuItemHover: ${sidebarBackgroundColor};`);
+    cssProperties.push(`--fibery-color-colorBgMenuItemSelected: ${sidebarBackgroundColor};`);
+    cssProperties.push(`--fibery-color-colorBgMenuItemSelectedHover: ${sidebarBackgroundColor};`);
+  }
+  if (sidebarTextColor) {
+    cssProperties.push(`--fibery-color-colorTextMenuItem: ${sidebarTextColor};`);
+  }
+  if (sidebarIconColor) {
+    cssProperties.push(`--fibery-color-menuIconColor: ${sidebarIconColor};`);
+  }
+
+  // Custom properties (already filtered in customCssVariables)
+  if (customCssVariables.trim()) {
+    cssProperties.push(customCssVariables);
+  }
+
+  // Generate the final CSS
   style.textContent = `* {
-    /* Basic */
-    font-family: ${fontFamily} !important;
-    --fibery-color-textColor: ${textColor};
-    --fibery-color-linkColor: ${linkColor};
-    --fibery-color-mainBg: ${mainBackgroundColor};
-    --fibery-color-panelBg: ${panelContentBackgroundColor};
-    --fibery-color-panelContentBg: ${panelContentBackgroundColor};
-  
-  
-    /* Button */
-    --fibery-color-colorTextButtonSolidAccent: ${buttonTextColor};
-    --fibery-color-colorBgButtonSolidAccentDefault: ${buttonBackgroundColor};
-    --fibery-color-colorTextButtonSolidDestructive: ${buttonDestructiveTextColor};
-    --fibery-color-colorBgButtonSolidDestructiveDefault: ${buttonDestructiveBackgroundColor};
-  
-    /* Sidebar */
-    --fibery-color-menuBg: ${sidebarBackgroundColor};
-    --fibery-color-colorTextMenuItem: ${sidebarTextColor};
-    --fibery-color-menuIconColor: ${sidebarIconColor};
-    --fibery-color-colorBgMenuItemHover: ${sidebarBackgroundColor};
-    --fibery-color-colorBgMenuItemSelected: ${sidebarBackgroundColor};
-    --fibery-color-colorBgMenuItemSelectedHover: ${sidebarBackgroundColor};
-  
-    /* Custom */
-    ${customCssVariables}
-  }`;
+  ${cssProperties.map((prop) => '  ' + prop).join('\n')}
+}`;
 }
 
 fiberflowCustomBranding();

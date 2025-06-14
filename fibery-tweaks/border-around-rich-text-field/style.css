@@ -1,6 +1,7 @@
 .object_panel .ProseMirror {
   position: relative;
 }
+
 .object_panel .ProseMirror:after {
   content: "";
   display: block;
