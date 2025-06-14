@@ -1,0 +1,9 @@
+{
+  "id": "99e9ee27-9229-4353-94e4-64b5bc601a7a",
+  "name": "Border around Rich-Text Field",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Add a border around the Rich-Text field.",
+  "version": "1.0.0",
+  "keywords": ["Rich-Text Field"],
+  "parameters": {}
+}

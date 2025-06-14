@@ -1,0 +1,9 @@
+{
+  "id": "d5b7dfb1-c578-4c8b-b18c-d846409dbee8",
+  "name": "Set Entity Icon as Tab Favicon",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Set the entity icon or avatar as the tab favicon. Document icons and emojis will also be set as tab favicon.",
+  "version": "1.0.0",
+  "keywords": ["Tab Title"],
+  "parameters": {}
+}

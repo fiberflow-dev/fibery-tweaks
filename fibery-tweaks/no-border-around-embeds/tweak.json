@@ -1,0 +1,9 @@
+{
+  "id": "a5f2ca53-c2e9-4e96-abf7-4ca4fbcef206",
+  "name": "No Border around Embeds",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Remove the border around the embeds.",
+  "version": "1.0.0",
+  "keywords": ["Embeds"],
+  "parameters": {}
+}

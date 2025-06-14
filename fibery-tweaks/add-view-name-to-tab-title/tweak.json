@@ -1,3 +1,8 @@
 {
-  "$schema": "https://raw.githubusercontent.com/fiberflow-dev/fibery-tweaks/refs/heads/main/tweak-schema.json"
+  "id": "7f3890a9-85d2-4918-be5e-ca3f011f4546",
+  "name": "Add View Name to Tab Title",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Add the view name to the entity tab title.",
+  "version": "1.0.0",
+  "keywords": ["Tab Title"]
 }

@@ -4,11 +4,102 @@
   "id": "https://raw.githubusercontent.com/fiberflow-dev/fibery-tweaks/refs/heads/main/tweak-schema.json",
   "title": "JSON schema for tweak.json files",
   "additionalProperties": false,
-  "required": ["id", "name", "description", "author", "version", "keywords", "parametersDef", "parameters"],
+  "required": ["id", "name", "description", "author", "version", "keywords"],
+  "definitions": {
+    "parameterDefinition": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Unique identifier for the parameter (UUID format)"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the parameter"
+        },
+        "tooltip": {
+          "type": "string",
+          "description": "Optional tooltip text to explain the parameter"
+        },
+        "position": {
+          "type": "integer",
+          "description": "Position for ordering parameters in UI"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["string", "number", "boolean", "color", "enum", "array", "object", "fibery_field"],
+          "description": "Type of the parameter"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "object" } }
+          },
+          "then": {
+            "properties": {
+              "properties": {
+                "type": "object",
+                "additionalProperties": { "$ref": "#/definitions/parameterDefinition" },
+                "description": "Properties for object type parameters"
+              }
+            },
+            "required": ["properties"]
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "array" } }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "$ref": "#/definitions/parameterDefinition",
+                "description": "Item definition for array type parameters"
+              }
+            },
+            "required": ["items"]
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "enum" } }
+          },
+          "then": {
+            "properties": {
+              "options": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Available options for enum type parameters"
+              }
+            },
+            "required": ["options"]
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "fibery_field" } }
+          },
+          "then": {
+            "properties": {
+              "includeFieldTypes": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Restrict to specific field types"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
   "properties": {
     "id": {
       "type": "string",
-      "description": "Unique identifier for the tweak"
+      "format": "uuid",
+      "description": "Unique identifier for the tweak (UUID format)"
     },
     "name": {
       "type": "string",
@@ -34,36 +125,13 @@
       "description": "Keywords associated with the tweak"
     },
     "parametersDef": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["object"]
-        },
-        "properties": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "required": ["label", "type"],
-            "properties": {
-              "label": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": ["boolean", "string", "number"]
-              }
-            }
-          }
-        }
-      },
-      "required": ["type", "properties"]
+      "$ref": "#/definitions/parameterDefinition",
+      "description": "Definition of the tweak's configurable parameters"
     },
     "parameters": {
       "type": "object",
-      "additionalProperties": {
-        "type": ["boolean", "string", "number"]
-      }
+      "additionalProperties": true,
+      "description": "Default parameter values"
     }
   }
 }

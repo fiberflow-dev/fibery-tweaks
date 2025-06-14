@@ -1,0 +1,30 @@
+{
+  "id": "7aebc2b2-57ed-42bb-8b7c-526373285923",
+  "name": "Better Timeline Today Marker",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Make the timeline today marker more visible. Increase the width and place the today marker in front of the timeline events.",
+  "version": "1.0.0",
+  "keywords": ["Timeline"],
+  "parameters": {
+    "width": 8,
+    "color": "#ea8f90"
+  },
+  "parametersDef": {
+    "id": "7aebc2b2-57ed-42bb-8b7c-526373285923-params",
+    "type": "object",
+    "properties": {
+      "width": {
+        "id": "a7b8c9d0-e1f2-3456-abcd-789012345678",
+        "type": "number",
+        "label": "Indicator width",
+        "position": 1
+      },
+      "color": {
+        "id": "b8c9d0e1-f2a3-4567-bcde-890123456789",
+        "type": "color",
+        "label": "Indicator color",
+        "position": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "55ba4c68-cd0a-46af-8589-b2d2b5355a0d",
+  "name": "Hide Empty Collections",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Hide empty collections fields in the entity view.",
+  "version": "1.0.0",
+  "keywords": ["Collections", "Fields", "Entity View"],
+  "parameters": {},
+  "parametersDef": {
+    "id": "55ba4c68-cd0a-46af-8589-b2d2b5355a0d-params",
+    "type": "object",
+    "properties": {
+      "collections": {
+        "id": "d0e1f2a3-b4c5-6789-defa-012345678901",
+        "label": "Collections",
+        "type": "array",
+        "tooltip": "The collections to hide.",
+        "position": 1,
+        "items": {
+          "id": "e1f2a3b4-c5d6-789a-efab-123456789012",
+          "type": "fibery_field",
+          "includeFieldTypes": ["MULTI_RELATION"],
+          "tooltip": "The collection to hide.",
+          "position": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "ae9fe3cf-fce6-4d4d-857e-583d829edccb",
+  "name": "Disable embedded view actions",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Disable embedded view actions like create, sort and filter.",
+  "version": "1.0.0",
+  "keywords": ["Embedded View"],
+  "parameters": {
+    "hideSearch": false,
+    "hideItems": true,
+    "hideFields": true,
+    "hideFilters": true,
+    "hideSort": true,
+    "hideColors": true,
+    "hideCreate": true,
+    "hideExpand": false
+  },
+  "parametersDef": {
+    "id": "ae9fe3cf-fce6-4d4d-857e-583d829edccb-params",
+    "type": "object",
+    "properties": {
+      "hideSearch": {
+        "id": "f2a3b4c5-d6e7-890b-fabc-234567890123",
+        "type": "boolean",
+        "label": "Hide search",
+        "tooltip": "Hide the search input in the embedded view.",
+        "position": 1
+      },
+      "hideItems": {
+        "id": "a3b4c5d6-e7f8-901c-abcd-345678901234",
+        "type": "boolean",
+        "label": "Hide items",
+        "tooltip": "Hide the items in the embedded view.",
+        "position": 2
+      },
+      "hideFields": {
+        "id": "b4c5d6e7-f8a9-012d-bcde-456789012345",
+        "type": "boolean",
+        "label": "Hide fields",
+        "tooltip": "Hide the fields in the embedded view.",
+        "position": 3
+      },
+      "hideFilters": {
+        "id": "c5d6e7f8-a9b0-123e-cdef-567890123456",
+        "type": "boolean",
+        "label": "Hide filters",
+        "tooltip": "Hide the filters in the embedded view.",
+        "position": 4
+      },
+      "hideSort": {
+        "id": "d6e7f8a9-b0c1-234f-defa-678901234567",
+        "type": "boolean",
+        "label": "Hide sort",
+        "tooltip": "Hide the sort in the embedded view.",
+        "position": 5
+      },
+      "hideColors": {
+        "id": "e7f8a9b0-c1d2-345a-efab-789012345678",
+        "type": "boolean",
+        "label": "Hide colors",
+        "tooltip": "Hide the colors in the embedded view.",
+        "position": 6
+      },
+      "hideCreate": {
+        "id": "f8a9b0c1-d2e3-456b-fabc-890123456789",
+        "type": "boolean",
+        "label": "Hide create",
+        "tooltip": "Hide the create in the embedded view.",
+        "position": 7
+      },
+      "hideExpand": {
+        "id": "a9b0c1d2-e3f4-567c-abcd-901234567890",
+        "type": "boolean",
+        "label": "Hide expand",
+        "tooltip": "Hide the expand in the embedded view.",
+        "position": 8
+      }
+    }
+  }
+}

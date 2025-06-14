@@ -1,0 +1,155 @@
+{
+  "id": "c125dc08-7c8d-4eec-a1da-18de0fe058b3",
+  "name": "Custom Branding",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Customize the branding of your Fibery workspace.",
+  "version": "1.0.0",
+  "keywords": ["Whitelabel", "Branding"],
+  "parameters": {
+    "basic": {
+      "textColor": null,
+      "fontFamily": null,
+      "linkColor": null,
+      "mainBackgroundColor": null,
+      "panelContentBackgroundColor": null
+    },
+    "button": {
+      "textColor": null,
+      "backgroundColor": null,
+      "destructiveTextColor": null,
+      "destructiveBackgroundColor": null
+    },
+    "sidebar": {
+      "backgroundColor": null,
+      "textColor": null,
+      "iconColor": null
+    }
+  },
+  "parametersDef": {
+    "id": "c125dc08-7c8d-4eec-a1da-18de0fe058b3-params",
+    "type": "object",
+    "properties": {
+      "basic": {
+        "id": "b8e7c2a1-5f3d-4e9b-8c7a-1d2e3f4a5b6c",
+        "label": "Basic",
+        "position": 1,
+        "type": "object",
+        "properties": {
+          "textColor": {
+            "id": "c9f8d3b2-6e4a-5d8c-9b7e-2f3a4c5d6e7f",
+            "position": 1,
+            "type": "color",
+            "label": "Text color"
+          },
+          "fontFamily": {
+            "id": "d4e9b7c1-8f2a-6e5d-ac3b-4f6e8d9c2a1b",
+            "position": 2,
+            "type": "string",
+            "label": "Font family"
+          },
+          "linkColor": {
+            "id": "e5f3c8d2-9a4b-7f6e-bd5c-6e8f9a2d3c4e",
+            "position": 2,
+            "type": "color",
+            "label": "Link color"
+          },
+          "mainBackgroundColor": {
+            "id": "f6a4d9e3-bc7f-8e2a-ce6d-7f9a3e4d5f6a",
+            "position": 3,
+            "type": "color",
+            "label": "Main background color"
+          },
+          "panelContentBackgroundColor": {
+            "id": "a7b5e0f4-cd8a-9f3b-df7e-8a0b4f5e6a7b",
+            "position": 4,
+            "type": "color",
+            "label": "Panel content background color"
+          }
+        }
+      },
+      "button": {
+        "id": "b8c6f1a5-de9b-af4c-ea8f-9b1c5a6f7b8c",
+        "label": "Button",
+        "position": 2,
+        "type": "object",
+        "properties": {
+          "textColor": {
+            "id": "c9d7f2b6-ef0c-ba5d-fb9a-0c2d6b7f8c9d",
+            "position": 1,
+            "type": "color",
+            "label": "Text color"
+          },
+          "backgroundColor": {
+            "id": "dae8f3c7-fa1d-cb6e-ac0b-1d3e7c8f9dae",
+            "position": 2,
+            "type": "color",
+            "label": "Background color"
+          },
+          "destructiveTextColor": {
+            "id": "ebf9a4d8-ab2e-dc7f-bd1c-2e4f8d9aebf9",
+            "position": 4,
+            "type": "color",
+            "label": "Destructive text color"
+          },
+          "destructiveBackgroundColor": {
+            "id": "fc0ab5e9-bc3f-ed8a-ce2d-3f5a9eafcab0",
+            "position": 3,
+            "type": "color",
+            "label": "Destructive background color"
+          }
+        }
+      },
+      "sidebar": {
+        "id": "ad1bc6fa-cd4e-af9b-df3e-4a6b0fc1ad1b",
+        "label": "Sidebar",
+        "position": 3,
+        "type": "object",
+        "properties": {
+          "backgroundColor": {
+            "id": "be2cd7ab-de5f-ba0c-ea4f-5b7c1ad2be2c",
+            "position": 1,
+            "type": "color",
+            "label": "Background color"
+          },
+          "textColor": {
+            "id": "cf3de8bc-ef6a-cb1d-fb5a-6c8d2be3cf3d",
+            "position": 2,
+            "type": "color",
+            "label": "Text color"
+          },
+          "iconColor": {
+            "id": "da4ef9cd-fa7b-dc2e-ac6b-7d9e3cf4da4e",
+            "position": 3,
+            "type": "color",
+            "label": "Icon color"
+          }
+        }
+      },
+      "custom": {
+        "id": "eb5fa0de-ab8c-bd3f-eb7c-8e0f4ea5eb5f",
+        "label": "Custom",
+        "tooltip": "Add custom CSS variables to the theme.",
+        "position": 4,
+        "type": "array",
+        "items": {
+          "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          "type": "object",
+          "properties": {
+            "variableName": {
+              "id": "fc6ab1ef-bc9d-ce4a-fc8d-9f1a5fb6fc6a",
+              "position": 1,
+              "type": "string",
+              "label": "CSS variable name"
+            },
+            "color": {
+              "id": "ad7bc2fa-cd5e-df9b-ad9e-0a2c6fa7ad7b",
+              "position": 2,
+              "type": "color",
+              "label": "Color"
+            }
+          }
+        }
+      }
+    }
+  }
+}

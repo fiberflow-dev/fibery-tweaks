@@ -1,0 +1,24 @@
+{
+  "id": "1e40eec4-9611-4ac8-a2b2-b21fc0d8d601",
+  "name": "Wrap Calendar Event Fields",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Let calendar event fields wrap into multiple lines.",
+  "version": "1.0.0",
+  "keywords": ["Calendar View"],
+  "parameters": {
+    "titleMaxRows": 2
+  },
+  "parametersDef": {
+    "id": "1e40eec4-9611-4ac8-a2b2-b21fc0d8d601-params",
+    "type": "object",
+    "properties": {
+      "titleMaxRows": {
+        "id": "c9d0e1f2-a3b4-5678-cdef-901234567890",
+        "type": "number",
+        "label": "Title maximum rows",
+        "tooltip": "The maximum number of rows to display in the title. After the number of rows is reached, the title will be truncated.",
+        "position": 1
+      }
+    }
+  }
+}

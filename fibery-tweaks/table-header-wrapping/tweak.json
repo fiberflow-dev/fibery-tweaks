@@ -1,0 +1,9 @@
+{
+  "id": "dae49e67-9290-44f6-b976-ff50ffa9c3ef",
+  "name": "Table header wrapping",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Allow table view header field names to wrap into multiple lines.",
+  "version": "1.0.0",
+  "keywords": ["Table View"],
+  "parameters": {}
+}
