@@ -1,0 +1,8 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["**/tweak.json"],
+      "url": "./tweak-schema.json"
+    }
+  ]
+}
