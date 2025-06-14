@@ -1,0 +1,69 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://raw.githubusercontent.com/fiberflow-dev/fibery-tweaks/refs/heads/main/tweak-schema.json",
+  "title": "JSON schema for tweak.json files",
+  "additionalProperties": false,
+  "required": ["id", "name", "description", "author", "version", "keywords", "parametersDef", "parameters"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the tweak"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the tweak"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what the tweak does"
+    },
+    "author": {
+      "type": "string",
+      "description": "Author information including name, email and website"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version number of the tweak"
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Keywords associated with the tweak"
+    },
+    "parametersDef": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["object"]
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["label", "type"],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["boolean", "string", "number"]
+              }
+            }
+          }
+        }
+      },
+      "required": ["type", "properties"]
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["boolean", "string", "number"]
+      }
+    }
+  }
+}
