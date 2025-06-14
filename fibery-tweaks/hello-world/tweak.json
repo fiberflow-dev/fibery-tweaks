@@ -1,0 +1,9 @@
+{
+  "id": "12345678-9abc-def0-1234-56789abcdef0",
+  "name": "Hello World",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "A simple example tweak that logs 'Hello World' to the console.",
+  "version": "1.0.0",
+  "keywords": ["Example", "Demo", "Hello World"],
+  "parameters": {}
+}
