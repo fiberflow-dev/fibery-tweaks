@@ -24,36 +24,106 @@ function fiberflowSmallerTimePickerInterval() {
 
     // Check if the cursor is inside the time portion
     const inputElement = event.target;
-    const cursorPosition = inputElement.selectionStart;
-    if (!cursorPosition) return;
+    let cursorPosition = inputElement.selectionStart;
 
-    // Get the input value and find time pattern
+    // If entire input is selected (common behavior), calculate actual click position
+    if (cursorPosition === 0 && inputElement.selectionEnd === inputElement.value.length) {
+      // Use browser's built-in APIs to get accurate cursor position from mouse coordinates
+      if (document.caretPositionFromPoint) {
+        const caretPosition = document.caretPositionFromPoint(event.clientX, event.clientY);
+        if (caretPosition && caretPosition.offsetNode === inputElement) {
+          cursorPosition = caretPosition.offset;
+        }
+      } else if (document.caretRangeFromPoint) {
+        const range = document.caretRangeFromPoint(event.clientX, event.clientY);
+        if (range && range.startContainer === inputElement) {
+          cursorPosition = range.startOffset;
+        }
+      } else {
+        // Fallback: create a temporary element to measure text width accurately
+        const tempSpan = document.createElement('span');
+        const inputStyles = window.getComputedStyle(inputElement);
+        tempSpan.style.font = inputStyles.font;
+        tempSpan.style.fontSize = inputStyles.fontSize;
+        tempSpan.style.fontFamily = inputStyles.fontFamily;
+        tempSpan.style.fontWeight = inputStyles.fontWeight;
+        tempSpan.style.letterSpacing = inputStyles.letterSpacing;
+        tempSpan.style.position = 'absolute';
+        tempSpan.style.visibility = 'hidden';
+        tempSpan.style.whiteSpace = 'pre';
+        document.body.appendChild(tempSpan);
+
+        const inputRect = inputElement.getBoundingClientRect();
+        const clickX = event.clientX - inputRect.left;
+        const paddingLeft = parseFloat(inputStyles.paddingLeft) || 0;
+        const targetWidth = clickX - paddingLeft;
+
+        // Binary search to find the character position
+        let left = 0;
+        let right = inputElement.value.length;
+
+        while (left < right) {
+          const mid = Math.floor((left + right) / 2);
+          tempSpan.textContent = inputElement.value.substring(0, mid);
+          const width = tempSpan.getBoundingClientRect().width;
+
+          if (width < targetWidth) {
+            left = mid + 1;
+          } else {
+            right = mid;
+          }
+        }
+
+        cursorPosition = left;
+        document.body.removeChild(tempSpan);
+      }
+
+      // Ensure cursorPosition is within bounds
+      cursorPosition = Math.max(0, Math.min(cursorPosition, inputElement.value.length));
+    }
+
+    if (cursorPosition < 0) return;
+
+    // Get the input value and find all time patterns
     const dateStr = inputElement.value;
-    const timeMatch = dateStr.match(/(\d{2}:\d{2})/);
-    if (!timeMatch) {
+    const timeRegex = /(\d{2}:\d{2})/g;
+    const timeMatches = [];
+    let match;
+
+    while ((match = timeRegex.exec(dateStr)) !== null) {
+      timeMatches.push({
+        value: match[0],
+        startIndex: match.index,
+        endIndex: match.index + match[0].length,
+      });
+    }
+
+    if (timeMatches.length === 0) {
       closeTimePickerMenu();
       return;
     }
 
-    const timeStartIndex = timeMatch.index;
-    if (!timeStartIndex) {
-      closeTimePickerMenu();
-      return;
+    // Find which time portion the cursor is in
+    let targetTimeMatch = null;
+    for (const timeMatch of timeMatches) {
+      if (cursorPosition >= timeMatch.startIndex && cursorPosition <= timeMatch.endIndex) {
+        targetTimeMatch = timeMatch;
+        break;
+      }
     }
-    const timeEndIndex = timeStartIndex + timeMatch[0].length;
 
-    if (cursorPosition >= timeStartIndex && cursorPosition <= timeEndIndex) {
+    if (targetTimeMatch) {
       // Open the time picker
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
-      openTimePickerMenu(inputElement, timeStartIndex);
+      openTimePickerMenu(inputElement, targetTimeMatch.startIndex, targetTimeMatch.endIndex);
     } else {
       closeTimePickerMenu();
     }
   });
 
-  function openTimePickerMenu(inputElement, timeStartIndex) {
+  function openTimePickerMenu(inputElement, timeStartIndex, timeEndIndex) {
     // Close existing menu if any
     closeTimePickerMenu();
 
@@ -78,7 +148,7 @@ function fiberflowSmallerTimePickerInterval() {
     const iframe = document.createElement('iframe');
     iframe.id = 'fiberflow-time-picker-iframe';
     iframe.style.cssText = `
-    width: 120px;
+    width: 100px;
     height: 300px;
     border: none;
     background: transparent;
@@ -110,34 +180,38 @@ function fiberflowSmallerTimePickerInterval() {
           <style>
             body {
               margin: 0;
-              padding: 4px 8px;
+              padding: 0;
+              padding-left: 6px;
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
               font-size: 14px;
               background: white;
               border-radius: 4px;
-              max-height: 300px;
+              width: 100%;
+              height: 100%;
               overflow-y: auto;
+              overflow-x: hidden;
+              box-sizing: border-box;
             }
             .time-slot {
               width: 100%;
-              padding: 4px 8px;
+              height: 32px;
+              padding: 0 8px;
               border: none;
               background: none;
               border-radius: 4px;
               cursor: pointer;
               text-align: left;
               font-size: 14px;
-              line-height: 20px;
+              line-height: 32px;
               display: block;
-              margin: 1px 0;
+              box-sizing: border-box;
+              transition: background-color 50ms ease-in-out;
             }
             .time-slot:hover {
               background: #f0f0f0;
             }
             .time-slot.current-time {
               background: #e3f2fd;
-              color: #1976d2;
-              font-weight: bold;
             }
             .time-slot.current-time:hover {
               background: #bbdefb;
@@ -167,13 +241,13 @@ function fiberflowSmallerTimePickerInterval() {
 
       const menu = iframeDoc.getElementById('time-picker-menu');
 
-      // Get time from input field to highlight and scroll to
-      const inputTime = inputElement.value.match(/(\d{2}:\d{2})/);
+      // Get time from the specific portion that was clicked to highlight and scroll to
+      const currentTimeString = inputElement.value.substring(timeStartIndex, timeEndIndex);
       let inputHours = 0;
       let inputMinutes = 0;
 
-      if (inputTime) {
-        [inputHours, inputMinutes] = inputTime[0].split(':').map(Number);
+      if (currentTimeString && currentTimeString.match(/\d{2}:\d{2}/)) {
+        [inputHours, inputMinutes] = currentTimeString.split(':').map(Number);
       }
 
       const inputTotalMinutes = inputHours * 60 + inputMinutes;
@@ -214,14 +288,14 @@ function fiberflowSmallerTimePickerInterval() {
 
         // Click handler - this will be isolated within the iframe
         button.addEventListener('click', () => {
-          handleTimeSlotClick(inputElement, timeSlot);
+          handleTimeSlotClick(inputElement, timeSlot, timeStartIndex, timeEndIndex);
         });
 
         menu.appendChild(button);
       });
 
       // Adjust iframe height based on content
-      const contentHeight = Math.min(300, menu.scrollHeight + 16); // 16px for padding
+      const contentHeight = Math.min(300, menu.scrollHeight);
       iframe.style.height = `${contentHeight}px`;
 
       // Scroll to current time after a brief delay to ensure content is rendered
@@ -295,68 +369,130 @@ function fiberflowSmallerTimePickerInterval() {
     return slots;
   }
 
-  function handleTimeSlotClick(inputElement, timeSlot) {
+  function handleTimeSlotClick(inputElement, timeSlot, timeStartIndex, timeEndIndex) {
     closeTimePickerMenu();
 
-    // Get current input value
+    // Focus the input element first
+    inputElement.focus();
+
+    // Select the time portion that needs to be replaced
+    inputElement.setSelectionRange(timeStartIndex, timeEndIndex);
+
+    // Simulate typing the new time slot character by character
+    simulateTyping(inputElement, timeSlot);
+  }
+
+  function simulateTyping(inputElement, text) {
+    // Get the current selection to replace it
+    const selectionStart = inputElement.selectionStart;
+    const selectionEnd = inputElement.selectionEnd;
     const currentValue = inputElement.value;
 
-    // Replace the time portion with the selected time
-    const timeMatch = currentValue.match(/(\d{2}:\d{2})/);
-    if (timeMatch) {
-      const newValue = currentValue.replace(/\d{2}:\d{2}/, timeSlot);
+    // Replace the selected portion
+    const newValue = currentValue.substring(0, selectionStart) + text + currentValue.substring(selectionEnd);
 
-      // Refocus
+    // Try to access React's internal value setter directly
+    const reactDescriptor = Object.getOwnPropertyDescriptor(inputElement, 'value');
+    const prototypeDescriptor =
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(inputElement), 'value') ||
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+    // Set the value using React's internal mechanisms
+    if (prototypeDescriptor && prototypeDescriptor.set) {
+      prototypeDescriptor.set.call(inputElement, newValue);
+    } else {
+      inputElement.value = newValue;
+    }
+
+    // Set cursor position after the inserted text
+    const newCursorPosition = selectionStart + text.length;
+    inputElement.setSelectionRange(newCursorPosition, newCursorPosition);
+
+    // Create a more sophisticated input event that React will recognize
+    const nativeInputEvent = new Event('input', {
+      bubbles: true,
+      cancelable: true,
+    });
+
+    // Set up the event to look like a real user input
+    Object.defineProperty(nativeInputEvent, 'target', {
+      writable: false,
+      value: inputElement,
+    });
+
+    Object.defineProperty(nativeInputEvent, 'currentTarget', {
+      writable: false,
+      value: inputElement,
+    });
+
+    Object.defineProperty(nativeInputEvent, 'nativeEvent', {
+      writable: false,
+      value: nativeInputEvent,
+    });
+
+    // Trigger input event
+    inputElement.dispatchEvent(nativeInputEvent);
+
+    // Also create a synthetic React event
+    const syntheticEvent = {
+      target: inputElement,
+      currentTarget: inputElement,
+      type: 'input',
+      nativeEvent: nativeInputEvent,
+      preventDefault: () => {},
+      stopPropagation: () => {},
+      persist: () => {},
+    };
+
+    // Try to find React event listeners and call them directly
+    for (const key of Object.keys(inputElement)) {
+      if (key.startsWith('__reactEventHandlers') || key.startsWith('__reactProps')) {
+        const handlers = inputElement[key];
+        if (handlers && handlers.onChange) {
+          try {
+            handlers.onChange(syntheticEvent);
+          } catch (e) {
+            console.log('Direct onChange call failed:', e);
+          }
+        }
+        if (handlers && handlers.onInput) {
+          try {
+            handlers.onInput(syntheticEvent);
+          } catch (e) {
+            console.log('Direct onInput call failed:', e);
+          }
+        }
+      }
+    }
+
+    // Final attempt: Create change event
+    const changeEvent = new Event('change', {
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(changeEvent, 'target', {
+      writable: false,
+      value: inputElement,
+    });
+
+    Object.defineProperty(changeEvent, 'currentTarget', {
+      writable: false,
+      value: inputElement,
+    });
+
+    inputElement.dispatchEvent(changeEvent);
+
+    // Force React to re-render by triggering focus/blur cycle
+    inputElement.blur();
+    setTimeout(() => {
       inputElement.focus();
 
-      // Use React's way of setting input values
-      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-      nativeInputValueSetter.call(inputElement, newValue);
-
-      // Create more comprehensive events that React will recognize
-      const inputEvent = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-      });
-
-      // Set the target property to make it look more like a real user event
-      Object.defineProperty(inputEvent, 'target', {
-        writable: false,
-        value: inputElement,
-      });
-
-      Object.defineProperty(inputEvent, 'currentTarget', {
-        writable: false,
-        value: inputElement,
-      });
-
-      // Dispatch input event first (for real-time updates)
-      inputElement.dispatchEvent(inputEvent);
-
-      // Create and dispatch change event
-      const changeEvent = new Event('change', {
-        bubbles: true,
-        cancelable: true,
-      });
-
-      Object.defineProperty(changeEvent, 'target', {
-        writable: false,
-        value: inputElement,
-      });
-
-      Object.defineProperty(changeEvent, 'currentTarget', {
-        writable: false,
-        value: inputElement,
-      });
-
-      inputElement.dispatchEvent(changeEvent);
-
-      // Also try triggering a blur and focus to simulate user interaction
-      inputElement.blur();
-      setTimeout(() => {
-        inputElement.focus();
-      }, 0);
-    }
+      // Dispatch one more input event after focus
+      const finalInputEvent = new Event('input', { bubbles: true });
+      Object.defineProperty(finalInputEvent, 'target', { value: inputElement });
+      inputElement.dispatchEvent(finalInputEvent);
+    }, 0);
   }
 }
 
