@@ -1,0 +1,24 @@
+{
+  "id": "2a69c2a6-e9ec-48fb-baac-c0eac2cb18ec",
+  "name": "Smaller Time Picker Intervals",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Makes the time picker intervals smaller. Instead of every 30 minutes, it shows every 15 minutes or every 10 minutes.",
+  "version": "1.0.0",
+  "keywords": ["Time Picker", "Date Picker"],
+  "parameters": {
+    "timeslot": "15 minutes"
+  },
+  "parametersDef": {
+    "id": "2a69c2a6-e9ec-48fb-baac-c0eac2cb18ec-params",
+    "type": "object",
+    "properties": {
+      "timeslot": {
+        "id": "2a69c2a6-e9ec-48fb-baac-c0eac2cb18ec-timeslot",
+        "type": "enum",
+        "label": "Time slot interval",
+        "options": ["5 minutes", "10 minutes", "15 minutes", "30 minutes"],
+        "position": 1
+      }
+    }
+  }
+}
