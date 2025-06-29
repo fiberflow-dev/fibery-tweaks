@@ -128,7 +128,7 @@ If your tweak needs user configuration, define parameters:
 - `enum`: Dropdown with options
 - `array`: Array of items
 - `object`: Nested object with properties
-- `fibery_field`: Fibery field selector
+- `fibery-field`: Fibery field selector
 
 **Parameter Definition Properties:**
 
@@ -138,7 +138,7 @@ If your tweak needs user configuration, define parameters:
 - `tooltip`: Optional help text
 - `position`: Order in UI
 - `options`: Array of options (for enum type)
-- `includeFieldTypes`: Field type restrictions (for fibery_field type)
+- `includeFieldTypes`: Field type restrictions (for fibery-field type)
 
 ### Step 4: Create the README.md (Required)
 

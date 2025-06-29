@@ -29,7 +29,7 @@
         },
         "type": {
           "type": "string",
-          "enum": ["string", "number", "boolean", "color", "enum", "array", "object", "fibery_field"],
+          "enum": ["string", "number", "boolean", "color", "enum", "array", "object", "fibery-field"],
           "description": "Type of the parameter"
         }
       },
@@ -80,7 +80,7 @@
         },
         {
           "if": {
-            "properties": { "type": { "const": "fibery_field" } }
+            "properties": { "type": { "const": "fibery-field" } }
           },
           "then": {
             "properties": {
