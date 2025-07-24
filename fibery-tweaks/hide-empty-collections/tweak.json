@@ -18,7 +18,7 @@
         "position": 1,
         "items": {
           "id": "e1f2a3b4-c5d6-789a-efab-123456789012",
-          "type": "fibery-field",
+          "type": "fibery-fields",
           "includeFieldTypes": ["fiberflow/multi-relation"],
           "tooltip": "The collection to hide.",
           "position": 1

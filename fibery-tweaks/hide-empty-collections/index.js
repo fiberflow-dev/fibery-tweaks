@@ -8,11 +8,15 @@ function fiberflowHideEmptyCollections() {
   let cssRules = [];
 
   if (collections && Array.isArray(collections)) {
-    collections.forEach((fieldId) => {
-      // Hide collections that don't have any list_item children
-      cssRules.push(`div[data-rbd-draggable-id="field:${fieldId}"]:not(:has(.list_item)) {
-    display: none !important;
-  }`);
+    collections.forEach((fieldIdOrFieldIds) => {
+      const fieldIds = Array.isArray(fieldIdOrFieldIds) ? fieldIdOrFieldIds : [fieldIdOrFieldIds];
+
+      fieldIds.forEach((fieldId) => {
+        // Hide collections that don't have any list_item children
+        cssRules.push(`div[data-rbd-draggable-id="field:${fieldId}"]:not(:has(.list_item)) {
+          display: none !important;
+        }`);
+      });
     });
   }
 
