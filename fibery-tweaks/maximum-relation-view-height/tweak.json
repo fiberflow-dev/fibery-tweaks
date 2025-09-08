@@ -1,0 +1,57 @@
+{
+  "id": "b95fa670-5006-4b03-91f0-a0c71e5d1308",
+  "name": "Maximum Relation View Height",
+  "author": "Fiberflow <fiberflow.io@gmail.com> (https://fiberflow.io)",
+  "description": "Set the maximum height of the relation view of a relation field.",
+  "version": "1.0.0",
+  "keywords": ["Relations", "Fields", "Height", "View"],
+  "parameters": {
+    "fields": [
+      {
+        "maxHeight": 600
+      }
+    ]
+  },
+  "parametersDef": {
+    "id": "e65d6323-b305-4047-9ce0-2b29fbe802b9",
+    "type": "object",
+    "properties": {
+      "fields": {
+        "id": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+        "label": "Fields",
+        "type": "array",
+        "tooltip": "The relation fields to apply maximum height to.",
+        "position": 1,
+        "items": {
+          "id": "f2b3c4d5-e6f7-8901-bcde-f23456789012",
+          "type": "object",
+          "properties": {
+            "maxHeight": {
+              "id": "f4d5e6f7-a8b9-0123-defa-456789012345",
+              "type": "number",
+              "label": "Maximum Height (px)",
+              "tooltip": "The maximum height in pixels for the relation view.",
+              "position": 1
+            },
+            "fieldId": {
+              "id": "f3c4d5e6-f7a8-9012-cdef-345678901234",
+              "type": "fibery-field",
+              "includeFieldTypes": ["fiberflow/relation", "fiberflow/multi-relation"],
+              "label": "Field",
+              "tooltip": "Limit this rule to a specific relation field. If not set, applies to all relation fields.",
+              "position": 2
+            },
+            "viewType": {
+              "id": "f5e6f7a8-b9c0-1234-efab-567890123456",
+              "type": "enum",
+              "label": "View Type",
+              "tooltip": "Limit this rule to a specific view type. If not set, applies to all view types.",
+              "options": ["Table", "Board", "List", "Timeline", "Gantt", "Calendar", "Report", "Feed", "Map"],
+              "position": 3
+            }
+          }
+        }
+      }
+    }
+  }
+}
